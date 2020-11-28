@@ -28,5 +28,5 @@ const deleteCharacter = (dispatch, url) =>{
 
 export  {
     getCharacters,
-    deleteCharacter,
+    deleteCharacter
 }

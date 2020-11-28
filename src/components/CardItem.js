@@ -1,14 +1,17 @@
 import React from 'react';
-import { Card, Button, Image } from 'semantic-ui-react';
+import {Card, Button, Image} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import {useDispatch} from 'react-redux';
 
 import {deleteCharacter} from '../actions/actions';
 
 const CardItem = (props) => {
+    // get dispatch object
+    const dispatch = useDispatch();
+
     const {name, height, gender, url} = props.character;
 
-    const removeCharacter = () => props.deleteCharacter(url);
+    const removeCharacter = () => deleteCharacter(dispatch, url);
 
     return (
         <Card>
@@ -36,8 +39,4 @@ CardItem.propTypes = {
     character: PropTypes.object,
 };
 
-const mapDispatchToProps = dispatch => ({
-    deleteCharacter: (url) => deleteCharacter(dispatch, url)
-});
-
-export default connect(null, mapDispatchToProps)(CardItem);
+export default CardItem;

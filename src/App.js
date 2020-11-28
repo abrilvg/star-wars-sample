@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Dimmer, Loader } from 'semantic-ui-react';
-import { connect } from 'react-redux';
+import React, {useState, useEffect} from 'react';
+import {Dimmer, Loader} from 'semantic-ui-react';
+import {useDispatch, useSelector, shallowEqual} from 'react-redux';
 
 import SearchForm from './components/SearchForm';
 import {getCharacters} from './actions/actions';
@@ -8,11 +8,20 @@ import CardList from './components/CardList';
 
 import 'semantic-ui-css/semantic.min.css';
 
-const App = (props) => {
-    const [searchText, setSearchText] = useState('');
-    const handleChangeSearchText = (text) => setSearchText(text);
+const App = () => {
+    // reading from store
+    const {characters, loading} = useSelector(state => ({
+        characters: state.characters,
+        loading: state.loading
+    }), shallowEqual);
 
-    const charactersToShow = props.characters.filter(character => {
+    // get dispatch object
+    const dispatch = useDispatch();
+
+    // local state in App
+    const [searchText, setSearchText] = useState('');
+
+    const charactersToShow = characters.filter(character => {
         if (searchText === '') {
             return character;
         } else {
@@ -23,27 +32,18 @@ const App = (props) => {
     });
 
     useEffect(() => {
-            props.getCharacters();
+        getCharacters(dispatch);
     }, []);
 
     return (
         <section>
-            <Dimmer active={props.loading} inverted>
+            <Dimmer active={loading} inverted>
                 <Loader size='large'>Loading...</Loader>
             </Dimmer>
-            <SearchForm onTextChange={handleChangeSearchText}/>
+            <SearchForm onTextChange={setSearchText}/>
             <CardList characters={charactersToShow} searchText={searchText}/>
         </section>
     );
 };
 
-const mapStateToProps = state => ({
-    characters: state.characters,
-    loading: state.loading
-});
-
-const mapDispatchToProps = dispatch => ({
-    getCharacters: () => getCharacters(dispatch)
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;
