@@ -10,10 +10,8 @@ import 'semantic-ui-css/semantic.min.css';
 
 const App = () => {
     // reading from store
-    const {characters, loading} = useSelector(state => ({
-        characters: state.characters,
-        loading: state.loading
-    }), shallowEqual);
+    const characters = useSelector(store => store.characters);
+    const loading = useSelector(store => store.loading);
 
     // get dispatch object
     const dispatch = useDispatch();

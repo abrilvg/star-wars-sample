@@ -34,4 +34,6 @@ const charactersStore = (state = initialState, action) => {
 
 const store = createStore(charactersStore);
 
+export {charactersStore};
+
 export default store;
